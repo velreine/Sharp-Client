@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 using Sharp_Client.Classes;
 
 namespace Sharp_Client
@@ -62,8 +63,21 @@ namespace Sharp_Client
             return true;
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
 
+           
 
+            SharpDatabase database = new SharpDatabase();
+            
 
+            User usr = (database.Tables.User.GetUserByID(1));
+            // Maybe add SqlConnection to SharpDatabase, 
+            //so don't have to pass it to function everytime.
+            MessageBox.Show(usr.ToString());
+
+            database.myconn.Close();
+
+        }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Sharp_Client.Classes
 {
@@ -16,15 +17,19 @@ namespace Sharp_Client.Classes
 
         public static bool UserLogin(string username, string password)
         {
-            bool IsLoginCorrect = true;
+            
 
             var session = CreateSession();
             SessionHandler sh = new SessionHandler();
             sh.ChangeState(session, Session.State.SESSION_OPEN);
             // TODO: Add code to lookup user and password here.
 
-            
-            if (IsLoginCorrect)
+            SharpDatabase database = new SharpDatabase();
+
+            //User user = database.Tables.User.GetUserByID(1);
+            User user = database.Tables.User.GetUserWhere("Username", username);
+
+            if (user.Username == username && user.Password == password)
             {
                 // 1.5 Change Session status to authenticated.
                 sh.ChangeState(session, Session.State.SESSION_AUTHENTICATED);
@@ -34,9 +39,12 @@ namespace Sharp_Client.Classes
                
             }
 
+            MessageBox.Show("Invalid login!");
             sh.ChangeState(session, Session.State.SESSION_CLOSED);
             return false;
         }
+
+
 
     }
 
